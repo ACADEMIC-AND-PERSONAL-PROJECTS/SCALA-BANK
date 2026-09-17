@@ -9,6 +9,5 @@ enum Command:
   case Withdraw(accountId: String, amount: BigDecimal)
   case Transfer(fromId: String, toId: String, amount: BigDecimal)
   case ViewTransactions(accountId: String)
-  case ConvertCurrency(accountId: String, targetDevise: Devise)
   case CloseAccount(accountId: String)
   case Exit
