@@ -164,7 +164,7 @@ sbt console
 ```text
 [x] Phase 1 — Domain models
 [x] Phase 2 — Command parser (Either + matching)
-[ ] Phase 3 — Immutable in-memory storage
+[x] Phase 3 — Immutable in-memory storage
 [ ] Phase 4 — Account / transfer services
 [ ] Phase 5 — Reports
 [ ] Phase 6 — Interactive CLI loop
@@ -187,5 +187,3 @@ sbt console
 
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:8B1A18,50:DC322F,100:B82825&height=120&section=footer" width="100%"/>
-
-</div>
