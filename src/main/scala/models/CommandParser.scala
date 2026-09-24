@@ -1,8 +1,6 @@
 package me.khadimprojects
 package models
 
-import scala.util.Try
-
 class CommandParser:
 
   // Function used to parse the input of the user to a scala statement
