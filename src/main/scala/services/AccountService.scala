@@ -4,9 +4,8 @@ package services
 import models.{Account, AccountType, Customer, Devise, Transaction}
 import storage.InMemoryStorage
 import models.AccountStatut.ACTIVE
-
 import models.Devise.USD
-import models.TransactionType.DEPOSIT
+import models.TransactionType.{DEPOSIT, WITHDRAW}
 
 import java.util.UUID
 import java.time.LocalDateTime
@@ -39,7 +38,7 @@ class AccountService:
 
   }
 
-  // Deposit
+  // Deposit to an account
   def deposit(storage: InMemoryStorage,
               accountId: String,
               amount: BigDecimal): Either[String, (Transaction, InMemoryStorage)] = {
@@ -59,6 +58,38 @@ class AccountService:
       // New storage with all values updated
       storage2 = storage1.addTransaction(deposit)
     } yield (deposit, storage2)
+  }
+
+  // Withdraw an amount
+  def withdraw(storage: InMemoryStorage,
+               accountId: String,
+               amount: BigDecimal): Either[String, (Transaction, InMemoryStorage)] = {
+    for {
+      // Find the account
+      account <- storage.findAccount(accountId).toRight("Account not found")
+
+      // Check if the remaining amount is suffisant
+      _ <- if (account.balance >= amount) Right(()) else Left("Insufficient funds")
+
+      // Then withdraw
+      updatedAccount = account.copy(balance = account.balance - amount)
+
+      // Storing the new account
+      storage1 = storage.addAccount(updatedAccount)
+
+      // Create the transaction
+      withdraw = Transaction(
+        generateId(),
+        accountId,
+        amount,
+        WITHDRAW,
+        LocalDateTime.now(),
+        USD
+      )
+
+      // new storage
+      storage2 = storage1.addTransaction(withdraw)
+    } yield (withdraw, storage2)
   }
 
   // Generate an id
